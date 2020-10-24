@@ -5,7 +5,7 @@
         </div>
     <div class="container-piano pt-16">
        <div class="buttonRectangle mx-auto flex relative">
-       <button class="firstWhiteButton Ckey" @click="getGifs()"><span class="note">DO</span></button>
+       <button class="firstWhiteButton Ckey" @click="getGifs()"><span ref="do" class="note">DO</span></button>
        <button class="whiteButton Dkey" @click="getGifs()"><span class="note">RÉ</span> </button>
        <button class="whiteButton Ekey" @click="getGifs()"><span class="note">MI</span></button>
        <button class="whiteButton Fkey" @click="getGifs()"><span class="note">FA</span></button>
@@ -63,9 +63,8 @@ F2.addEventListener("click",this.playF2)
 G2.addEventListener("click",this.playG2)
 A2.addEventListener("click",this.playA2)
 //console.log(C2)
-window.addEventListener(KeyboardEvent,(event)=>{
-    console.log(event)
-})
+document.addEventListener('keydown', this.onKeyDown)
+document.addEventListener('keyup', this.onKeyUp)
   },
 methods: {
     // play(e){
@@ -74,9 +73,9 @@ methods: {
     async getGifs(){
         const gf = new GiphyFetch('hoc7Xw81iwUP2iewXhekupQznVmYDlHK')
         const result = await gf.emoji({
-            limit:10
+            limit:80
         })
-        const image = Math.floor(Math.random() * Math.floor(10))
+        const image = Math.floor(Math.random() * Math.floor(80))
         this.gifs = result.data[image].images.downsized.url
 
         console.log(this.gifs)
@@ -141,8 +140,68 @@ methods: {
         const audio = document.createElement('audio')
         audio.src = '/assets/sounds/A%23.mp3',
         audio.play()
+    },
+    //touche clavier il fonctionne mais au niveau de la couleur probleme
+onKeyDown(e){
+    if (this.isPress) return
+
+    switch (e.keyCode) {
+      case 65://a
+        this.playC()
+        this.getGifs()
+        document.querySelector('.firstWhiteButton').classList.toggle("button");
+        document.querySelector('.note').classList.toggle(".notes");
+        break;
+      case 90://Z
+        // va en haut
+        this.playD()
+        this.getGifs()
+        document.querySelector('.whiteButton').classList.toggle("button");
+        document.querySelector('.note').classList.toggle(".notes");
+        break;
+      case 69://E
+        // va à droite
+        this.playE()
+        this.getGifs()
+        document.querySelector('.firstWhiteButton').classList.toggle("button");
+        document.querySelector('.note').classList.toggle(".notes");
+        break;
+      case 82://R
+        // va en bas
+        this.playF()
+        this.getGifs()
+        document.querySelector('.whiteButton').classList.toggle("button");
+        document.querySelector('.note').classList.toggle(".notes");
+        break;
+
+        case 84://T
+        this.playG
+        document.querySelector('.firstWhiteButton').classList.toggle("button");
+        document.querySelector('.note').classList.toggle(".notes");
+        break;
+
+        case 89://Y
+        this.playA
+        document.querySelector('.firstWhiteButton').classList.toggle("button");
+        document.querySelector('.note').classList.toggle(".notes");
+        break;
+
+         case 85://U
+        this.playB
+        document.querySelector('.firstWhiteButton').classList.toggle("button");
+        document.querySelector('.note').classList.toggle(".notes");
+        break;
+
+         case 85://U
+        this.playC2
+        document.querySelector('.firstWhiteButton').classList.toggle("button");
+        document.querySelector('.note').classList.toggle(".notes");
+        break;
     }
-  } 
+    
+    
+}
+}
 }
 </script>
 
@@ -164,7 +223,12 @@ background-color: white;
   border-color: black;
  border-radius: 5px 0px 0px 5px;
 } 
-
+.button{
+    background-color: #FFD12D;
+}
+.notes{
+    color: white;
+}
 .firstWhiteButton:hover{
     background-color: #FFD12D;
 }
@@ -274,13 +338,13 @@ margin-left:36px;
 margin-left:30px;
 }   
 .b3{
-margin-left:76px;
+margin-left:80px;
 } 
 .b4{
 margin-left:28px;
 }  
 .b5{
-margin-left:28px;
+margin-left:30px;
 }   
 .note{
     display: none;
